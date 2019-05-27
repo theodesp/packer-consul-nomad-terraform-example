@@ -1,0 +1,35 @@
+{
+  "variables": {
+    "token": "",
+    "image": "",
+    "region": "",
+    "size": "",
+    "droplet_name": "",
+    "provision_script_param": ""
+  },
+  "builders": [
+    {
+      "droplet_name": "{{user `droplet_name`}}",
+      "type": "digitalocean",
+      "api_token": "{{user `token`}}",
+      "image": "{{user `image`}}",
+      "region": "{{user `region`}}",
+      "size": "{{user `size`}}",
+      "ssh_username": "root",
+      "snapshot_name": "consul-{{timestamp}}",
+      "tags": ["ubuntu"]
+    }
+  ],
+  "sensitive-variables": ["token"],
+  "provisioners": [
+    {
+      "type": "shell",
+      "environment_vars": [
+        "TARGET={{user `provision_script_param`}}"
+      ],
+      "scripts": [
+        "scripts/install.sh"
+      ]
+    }
+  ]
+}
